@@ -8,7 +8,7 @@ export interface BaseSerializerOpts {
     context?: string;
     id?: string;
     method?: string;
-    params?: Record<string, any>;
+    params?: Record<string, unknown>;
 }
 
 /**
@@ -33,7 +33,7 @@ export default abstract class BaseSerializer<T> {
      * @returns An object with one field, `name`, that describes the type of information serialized
      *  in its corresponding object described by `T`.
      */
-    protected abstract serializeContent(content: Array<object> | object): {
+    protected abstract serializeContent(content: Array<unknown> | unknown): {
         [name: string]: T;
     };
 
@@ -43,7 +43,7 @@ export default abstract class BaseSerializer<T> {
      * @returns The complete serialized object, including top level fields.
      */
     serialize(
-        content: Array<object> | object
+        content: Array<unknown> | unknown
     ): BaseSerializerOpts & { [name: string]: T } {
         const serializedChildData = this.serializeContent(content);
         const opts = this.baseOpts;

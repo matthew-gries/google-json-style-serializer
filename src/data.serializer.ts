@@ -23,19 +23,19 @@ export interface DataSerializerOpts {
     pagingLinkTemplate?: string;
     pageIndex?: number;
     totalPages?: number;
-    self?: object;
+    self?: unknown;
     selfLink?: string;
-    edit?: object;
+    edit?: unknown;
     editLink?: string;
-    next?: object;
+    next?: unknown;
     nextLink?: string;
-    previous?: object;
+    previous?: unknown;
     previousLink?: string;
 }
 /** Alias for serialized data */
 type SerializedDataType = DataSerializerOpts & {
-    items?: Array<object>;
-} & Record<string, any>;
+    items?: Array<unknown>;
+} & Record<string, unknown>;
 
 /**
  * Class to serialize data into the `data` object of a serialized JSON object.
@@ -97,14 +97,20 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
      *  described by `DataSerializerOpts`. If `content` is an `Array`, then `items` will be present with
      *  data serialized data. Otherwise, the fields of `content` will be present in the `data` object.
      */
-    protected serializeContent(content: Array<object> | object): {
+    protected serializeContent(content: Array<unknown> | unknown): {
         data: SerializedDataType;
     } {
         const serializedContent =
             content instanceof Array ? { items: content } : content;
-        const serializedData = Object.assign({}, this.dataOpts, serializedContent);
+        const serializedData = Object.assign(
+            {},
+            this.dataOpts,
+            serializedContent
+        );
         return {
-            data: removeUndefined(serializedData)
+            data: removeUndefined<SerializedDataType>(
+                serializedData as SerializedDataType
+            ),
         };
     }
 }

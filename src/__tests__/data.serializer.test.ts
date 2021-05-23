@@ -2,7 +2,6 @@ import { BaseSerializerOpts } from "../base.serializer";
 import DataSerializer, { DataSerializerOpts } from "../data.serializer";
 import removeUndefined from "../utils/remove.undefined";
 
-
 const BASE_OPTS: BaseSerializerOpts = {
     apiVersion: "apiVersion",
     context: "context",
