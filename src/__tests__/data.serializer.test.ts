@@ -1,27 +1,7 @@
 import { BaseSerializerOpts } from "../base.serializer";
 import DataSerializer, { DataSerializerOpts } from "../data.serializer";
+import removeUndefined from "../utils/remove.undefined";
 
-// Helper function to remove undefined from objects
-function removeUndefined(obj: object): object {
-    return (Object.keys(obj) as Array<keyof typeof obj>).reduce((acc, key) => {
-        if (obj[key] !== undefined) {
-            acc[key] = obj[key];
-        }
-        return acc;
-    }, {} as {[key: string]: any});
-}
-
-describe("removeUndefined", () => {
-    test.each`
-        obj                                 | expected
-        ${{}}                               | ${{}}  
-        ${{a: undefined}}                   | ${{}}
-        ${{a: 1, b: undefined}}             | ${{a: 1}}
-        ${{a: undefined, b: "hello"}}       | ${{b: "hello"}}
-    `("use $obj, expect $expected", ({obj, expected}) => {
-        expect(removeUndefined(obj)).toEqual(expected);
-    });
-});
 
 const BASE_OPTS: BaseSerializerOpts = {
     apiVersion: "apiVersion",
@@ -57,22 +37,48 @@ const DATA_OPTS: DataSerializerOpts = {
 
 describe("constructor with/without opts", () => {
     test.each`
-        name                        | input                                      | expectedBaseOpts | expectedDataOpts
-        ${undefined}                | ${undefined}                               | ${{}}            | ${{}}
-        ${"empty object"}           | ${{}}                                      | ${{}}            | ${{}}
-        ${"just base opts"}         | ${BASE_OPTS}                               | ${BASE_OPTS}     | ${{}}
-        ${"just data opts"}         | ${DATA_OPTS}                               | ${{}}            | ${DATA_OPTS}
-        ${"both base and data opts"}| ${Object.assign({}, BASE_OPTS, DATA_OPTS)} | ${BASE_OPTS}     | ${DATA_OPTS}
-    `(
-        "use $name",
-        ({ input, expectedBaseOpts, expectedDataOpts }) => {
-            const serializer = new DataSerializer(input);
+        name                         | input                                      | expectedBaseOpts | expectedDataOpts
+        ${undefined}                 | ${undefined}                               | ${{}}            | ${{}}
+        ${"empty object"}            | ${{}}                                      | ${{}}            | ${{}}
+        ${"just base opts"}          | ${BASE_OPTS}                               | ${BASE_OPTS}     | ${{}}
+        ${"just data opts"}          | ${DATA_OPTS}                               | ${{}}            | ${DATA_OPTS}
+        ${"both base and data opts"} | ${Object.assign({}, BASE_OPTS, DATA_OPTS)} | ${BASE_OPTS}     | ${DATA_OPTS}
+    `("use $name", ({ input, expectedBaseOpts, expectedDataOpts }) => {
+        const serializer = new DataSerializer(input);
 
-            const serializedBaseOpts = removeUndefined(serializer.baseOpts);
-            const serializedDataOpts = removeUndefined(serializer.dataOpts);
+        const serializedBaseOpts = removeUndefined(serializer.baseOpts);
+        const serializedDataOpts = removeUndefined(serializer.dataOpts);
 
-            expect(serializedBaseOpts).toEqual(expectedBaseOpts);
-            expect(serializedDataOpts).toEqual(expectedDataOpts);
-        }
-    );
+        expect(serializedBaseOpts).toEqual(expectedBaseOpts);
+        expect(serializedDataOpts).toEqual(expectedDataOpts);
+    });
+});
+
+// Helper interface to set up scenarios for testing
+interface DataSerializerScenario {
+    opts: BaseSerializerOpts & DataSerializerOpts;
+    data: Array<object> | object;
+    expected: object;
+}
+
+const NO_OPTIONS: DataSerializerScenario = {
+    opts: {},
+    data: { field1: 1, field2: "2", field3: true },
+    expected: {
+        data: {
+            field1: 1,
+            field2: "2",
+            field3: true,
+        },
+    },
+};
+
+describe("serialize", () => {
+    test.each`
+        name                           | scenario
+        ${"no options, single object"} | ${NO_OPTIONS}
+    `("$name", ({ scenario }) => {
+        const serializer = new DataSerializer(scenario.opts);
+        expect(serializer.serialize(scenario.data)).toEqual(scenario.expected);
+    });
 });

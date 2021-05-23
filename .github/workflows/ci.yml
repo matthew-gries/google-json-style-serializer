@@ -1,0 +1,24 @@
+name: Google JSON Style Serializer
+
+on:
+    push:
+        branches: ["**"]
+    pull_request:
+        branches: ["**"]
+
+jobs:
+    linting:
+        runs-on: ubuntu-latest
+        timeout-minutes: 1
+        steps:
+            - uses: actions/checkout@v2
+            - name: Run linting
+              run: yarn lint
+
+    test-and-coverage:
+        runs-on: ubuntu-latest
+        timeout-minutes: 4
+        steps:
+            - uses: actions/checkout@v2
+            - name: Run tests and coverage report
+              run: yarn coverage

@@ -10,6 +10,7 @@
         "start": "yarn build && node ./dist/index.js",
         "debug": "export DEBUG=* && yarn start",
         "test": "jest --config ./jest.config.js",
+        "coverage": "yarn test --coverage",
         "test-debug": "yarn test -i",
         "format": "prettier --write .",
         "lint": "prettier --check . && eslint src --ext .ts"

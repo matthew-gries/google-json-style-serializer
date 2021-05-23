@@ -1,4 +1,5 @@
 import BaseSerializer, { BaseSerializerOpts } from "./base.serializer";
+import removeUndefined from "./utils/remove.undefined";
 
 /**
  * Properties of the `data` object. See
@@ -101,11 +102,9 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
     } {
         const serializedContent =
             content instanceof Array ? { items: content } : content;
-        const serializedData = {
-            data: {
-                ...this.dataOpts,
-            },
+        const serializedData = Object.assign({}, this.dataOpts, serializedContent);
+        return {
+            data: removeUndefined(serializedData)
         };
-        return Object.assign({}, serializedData, serializedContent);
     }
 }
