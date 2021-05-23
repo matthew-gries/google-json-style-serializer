@@ -7,18 +7,13 @@ on:
         branches: ["**"]
 
 jobs:
-    linting:
+    ci:
         runs-on: ubuntu-latest
-        timeout-minutes: 1
+        timeout-minutes: 5
         steps:
             - uses: actions/checkout@v2
-            - name: Run linting
-              run: yarn lint
+            - name: Run CI
+            - run: yarn
+            - run: yarn lint
+            - run: yarn coverage
 
-    test-and-coverage:
-        runs-on: ubuntu-latest
-        timeout-minutes: 4
-        steps:
-            - uses: actions/checkout@v2
-            - name: Run tests and coverage report
-              run: yarn coverage
