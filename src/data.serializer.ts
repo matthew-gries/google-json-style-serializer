@@ -13,7 +13,7 @@ export interface DataSerializerOpts {
     kind?: string;
     fields?: string;
     etag?: string;
-    dataID?: string;
+    id?: string;
     updated?: string;
     deleted?: boolean;
     currentItemCount?: number;
@@ -50,44 +50,17 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
      * Constructs a data serializer.
      * @param opts The top level and `data` object specific options.
      */
-    constructor(opts?: BaseSerializerOpts & DataSerializerOpts) {
+    constructor(opts?: {
+        topLevel?: BaseSerializerOpts;
+        data?: DataSerializerOpts;
+    }) {
         const baseOpts: BaseSerializerOpts =
-            opts === undefined
-                ? {}
-                : {
-                      apiVersion: opts.apiVersion,
-                      context: opts.context,
-                      id: opts.id,
-                      method: opts.method,
-                      params: opts.params,
-                  };
+            opts !== undefined && opts.topLevel !== undefined
+                ? opts.topLevel
+                : {};
         super(baseOpts);
         this.dataOpts =
-            opts === undefined
-                ? {}
-                : {
-                      kind: opts.kind,
-                      fields: opts.fields,
-                      etag: opts.etag,
-                      dataID: opts.dataID,
-                      deleted: opts.deleted,
-                      updated: opts.updated,
-                      currentItemCount: opts.currentItemCount,
-                      itemsPerPage: opts.itemsPerPage,
-                      startIndex: opts.startIndex,
-                      totalItems: opts.totalItems,
-                      pagingLinkTemplate: opts.pagingLinkTemplate,
-                      pageIndex: opts.pageIndex,
-                      totalPages: opts.totalPages,
-                      self: opts.self,
-                      selfLink: opts.selfLink,
-                      edit: opts.edit,
-                      editLink: opts.editLink,
-                      next: opts.next,
-                      nextLink: opts.nextLink,
-                      previous: opts.previous,
-                      previousLink: opts.previousLink,
-                  };
+            opts !== undefined && opts.data !== undefined ? opts.data : {};
     }
 
     /**
@@ -102,11 +75,23 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
     } {
         const serializedContent =
             content instanceof Array ? { items: content } : content;
+
+        // Ensure that `kind` is the first field of the `data` object
+        const sortedDataOpts = {
+            kind: this.dataOpts.kind,
+            ...((): DataSerializerOpts => {
+                const tempOpts: DataSerializerOpts = { ...this.dataOpts };
+                delete tempOpts.kind;
+                return tempOpts;
+            })(),
+        };
+
         const serializedData = Object.assign(
             {},
-            this.dataOpts,
+            sortedDataOpts,
             serializedContent
         );
+
         return {
             data: removeUndefined<SerializedDataType>(
                 serializedData as SerializedDataType

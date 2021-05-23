@@ -23,8 +23,8 @@ export default abstract class BaseSerializer<T> {
      * Construct a base serializer.
      * @param opts The top level JSON properties to use, if provided.
      */
-    constructor(opts?: BaseSerializerOpts) {
-        this.baseOpts = opts !== undefined ? opts : {};
+    constructor(opts: BaseSerializerOpts) {
+        this.baseOpts = opts;
     }
 
     /**
