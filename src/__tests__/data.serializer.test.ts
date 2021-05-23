@@ -1,6 +1,5 @@
-import { BaseSerializerOpts } from "../base.serializer";
-import DataSerializer, { DataSerializerOpts } from "../data.serializer";
-import removeUndefined from "../utils/remove.undefined";
+import { BaseSerializerOpts } from "@src/base.serializer";
+import DataSerializer, { DataSerializerOpts } from "@src/data.serializer";
 
 const BASE_OPTS: BaseSerializerOpts = {
     apiVersion: "apiVersion",
@@ -44,11 +43,8 @@ describe("constructor with/without opts", () => {
     `("use $name", ({ input, expectedBaseOpts, expectedDataOpts }) => {
         const serializer = new DataSerializer(input);
 
-        const serializedBaseOpts = removeUndefined(serializer.baseOpts);
-        const serializedDataOpts = removeUndefined(serializer.dataOpts);
-
-        expect(serializedBaseOpts).toEqual(expectedBaseOpts);
-        expect(serializedDataOpts).toEqual(expectedDataOpts);
+        expect(serializer.baseOpts).toEqual(expectedBaseOpts);
+        expect(serializer.dataOpts).toEqual(expectedDataOpts);
     });
 });
 

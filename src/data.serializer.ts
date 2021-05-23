@@ -56,11 +56,13 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
     }) {
         const baseOpts: BaseSerializerOpts =
             opts !== undefined && opts.topLevel !== undefined
-                ? opts.topLevel
+                ? removeUndefined<BaseSerializerOpts>(opts.topLevel)
                 : {};
         super(baseOpts);
         this.dataOpts =
-            opts !== undefined && opts.data !== undefined ? opts.data : {};
+            opts !== undefined && opts.data !== undefined
+                ? removeUndefined<DataSerializerOpts>(opts.data)
+                : {};
     }
 
     /**
@@ -93,9 +95,7 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
         );
 
         return {
-            data: removeUndefined<SerializedDataType>(
-                serializedData as SerializedDataType
-            ),
+            data: removeUndefined<SerializedDataType>(serializedData),
         };
     }
 }

@@ -13,9 +13,9 @@ export interface BaseSerializerOpts {
 
 /**
  * Base class for serializers. Handles all top level JSON properties outside of `data` and `error` fields.
- * @template T The interface describing the serialized child data (i.e. anything that is not a top level field).
+ * @template ChildOpts The interface describing the serialized child data (i.e. anything that is not a top level field).
  */
-export default abstract class BaseSerializer<T> {
+export default abstract class BaseSerializer<ChildOpts> {
     /** Top level serializer options. */
     readonly baseOpts: BaseSerializerOpts;
 
@@ -34,7 +34,7 @@ export default abstract class BaseSerializer<T> {
      *  in its corresponding object described by `T`.
      */
     protected abstract serializeContent(content: Array<unknown> | unknown): {
-        [name: string]: T;
+        [name: string]: ChildOpts;
     };
 
     /**
@@ -44,7 +44,7 @@ export default abstract class BaseSerializer<T> {
      */
     serialize(
         content: Array<unknown> | unknown
-    ): BaseSerializerOpts & { [name: string]: T } {
+    ): BaseSerializerOpts & { [name: string]: ChildOpts } {
         const serializedChildData = this.serializeContent(content);
         const opts = this.baseOpts;
         return Object.assign({}, opts, serializedChildData);
