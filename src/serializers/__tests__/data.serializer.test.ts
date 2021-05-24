@@ -1,5 +1,6 @@
-import { BaseSerializerOpts } from "@src/base.serializer";
-import DataSerializer, { DataSerializerOpts } from "@src/data.serializer";
+import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
+import { DataSerializerOpts } from "@src/interfaces/data.serializer.interfaces";
+import DataSerializer from "../data.serializer";
 
 const BASE_OPTS: BaseSerializerOpts = {
     apiVersion: "apiVersion",
@@ -13,6 +14,7 @@ const DATA_OPTS: DataSerializerOpts = {
     kind: "kind",
     fields: "fields",
     etag: "etag",
+    lang: "lang",
     id: "id",
     updated: "updated",
     deleted: true,

@@ -1,46 +1,15 @@
-import BaseSerializer, { BaseSerializerOpts } from "./base.serializer";
-import removeUndefined from "./utils/remove.undefined";
-
-/**
- * Properties of the `data` object. See
- * https://google.github.io/styleguide/jsoncstyleguide.xml#Reserved_Property_Names_in_the_data_object,
- * https://google.github.io/styleguide/jsoncstyleguide.xml#Reserved_Property_Names_for_Paging, and
- * https://google.github.io/styleguide/jsoncstyleguide.xml#Reserved_Property_Names_for_Links, for
- * more information. The only option not included is `items` since this is dependant on the type of
- * data given to be serialized.
- */
-export interface DataSerializerOpts {
-    kind?: string;
-    fields?: string;
-    etag?: string;
-    id?: string;
-    updated?: string;
-    deleted?: boolean;
-    currentItemCount?: number;
-    itemsPerPage?: number;
-    startIndex?: number;
-    totalItems?: number;
-    pagingLinkTemplate?: string;
-    pageIndex?: number;
-    totalPages?: number;
-    self?: unknown;
-    selfLink?: string;
-    edit?: unknown;
-    editLink?: string;
-    next?: unknown;
-    nextLink?: string;
-    previous?: unknown;
-    previousLink?: string;
-}
-/** Alias for serialized data */
-type SerializedDataType = DataSerializerOpts & {
-    items?: Array<unknown>;
-} & Record<string, unknown>;
+import BaseSerializer from "./base.serializer";
+import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
+import removeUndefined from "@src/utils/remove.undefined";
+import {
+    DataSerializerOpts,
+    SerializedData,
+} from "@src/interfaces/data.serializer.interfaces";
 
 /**
  * Class to serialize data into the `data` object of a serialized JSON object.
  */
-export default class DataSerializer extends BaseSerializer<SerializedDataType> {
+export default class DataSerializer extends BaseSerializer<SerializedData> {
     /** Fields specific to the `data` object, with the exception of `items` since this is created depending
      *  on the given data to serialize.
      */
@@ -69,11 +38,11 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
      * Serializes the given content as a `data` object.
      * @param content The object or array of objects representing the data to be serialized.
      * @returns An object with one field, `data`, that contains the serialized data in an object
-     *  described by `DataSerializerOpts`. If `content` is an `Array`, then `items` will be present with
+     *  described by `SerializedData`. If `content` is an `Array`, then `items` will be present with
      *  data serialized data. Otherwise, the fields of `content` will be present in the `data` object.
      */
     protected serializeContent(content: Array<unknown> | unknown): {
-        data: SerializedDataType;
+        data: SerializedData;
     } {
         const serializedContent =
             content instanceof Array ? { items: content } : content;
@@ -95,7 +64,7 @@ export default class DataSerializer extends BaseSerializer<SerializedDataType> {
         );
 
         return {
-            data: removeUndefined<SerializedDataType>(serializedData),
+            data: removeUndefined<SerializedData>(serializedData),
         };
     }
 }

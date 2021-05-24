@@ -1,21 +1,10 @@
-/**
- * Interface for top level serializer options, see
- * https://google.github.io/styleguide/jsoncstyleguide.xml#Top-Level_Reserved_Property_Names for
- * more information. Does not include `data` or `error`.
- */
-export interface BaseSerializerOpts {
-    apiVersion?: string;
-    context?: string;
-    id?: string;
-    method?: string;
-    params?: Record<string, unknown>;
-}
+import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
 
 /**
  * Base class for serializers. Handles all top level JSON properties outside of `data` and `error` fields.
- * @template ChildOpts The interface describing the serialized child data (i.e. anything that is not a top level field).
+ * @template SerializedContentType The interface describing the serialized child data (i.e. anything that is not a top level field).
  */
-export default abstract class BaseSerializer<ChildOpts> {
+export default abstract class BaseSerializer<SerializedContentType> {
     /** Top level serializer options. */
     readonly baseOpts: BaseSerializerOpts;
 
@@ -34,7 +23,7 @@ export default abstract class BaseSerializer<ChildOpts> {
      *  in its corresponding object described by `T`.
      */
     protected abstract serializeContent(content: Array<unknown> | unknown): {
-        [name: string]: ChildOpts;
+        [name: string]: SerializedContentType;
     };
 
     /**
@@ -44,7 +33,7 @@ export default abstract class BaseSerializer<ChildOpts> {
      */
     serialize(
         content: Array<unknown> | unknown
-    ): BaseSerializerOpts & { [name: string]: ChildOpts } {
+    ): BaseSerializerOpts & { [name: string]: SerializedContentType } {
         const serializedChildData = this.serializeContent(content);
         const opts = this.baseOpts;
         return Object.assign({}, opts, serializedChildData);

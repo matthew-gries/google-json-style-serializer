@@ -1,38 +1,16 @@
-import BaseSerializer, { BaseSerializerOpts } from "./base.serializer";
-import removeUndefined from "./utils/remove.undefined";
-
-/**
- * Interface describing the properties of an error object inside of `error.errors`. See
- * https://google.github.io/styleguide/jsoncstyleguide.xml?showone=error.errors#error.errors for more
- * information. `reason` and `message` are provided by the error object that is serialized.
- */
-export interface ErrorOpts {
-    domain?: string;
-    location?: string;
-    locationType?: string;
-    extendedHelp?: string;
-    sendReport?: string;
-}
-
-/**
- * Interface to describe the properties of an `error` object. See
- * https://google.github.io/styleguide/jsoncstyleguide.xml#Reserved_Property_Names_in_the_error_object for
- * more information. The `message` field is dependant on the error that is serialized.
- */
-export interface ErrorSerializerOpts<ErrorType> {
-    code?: number;
-    errors?: Array<ErrorType>;
-}
-
-/** Alias for a serialized error. */
-type SerializedErrorType = ErrorSerializerOpts<
-    ErrorOpts & { message?: string; reason?: string }
-> & { message?: string };
+import BaseSerializer from "./base.serializer";
+import removeUndefined from "@src/utils/remove.undefined";
+import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
+import {
+    ErrorSerializerOpts,
+    ErrorOpts,
+    SerializedError,
+} from "@src/interfaces/error.serializer.interfaces";
 
 /**
  * Class to serialize error into an `error` object of a serialized JSON object.
  */
-export default class ErrorSerializer extends BaseSerializer<SerializedErrorType> {
+export default class ErrorSerializer extends BaseSerializer<SerializedError> {
     /** Options specific to an `error` object. */
     readonly errorOpts: ErrorSerializerOpts<ErrorOpts>;
 
@@ -65,7 +43,7 @@ export default class ErrorSerializer extends BaseSerializer<SerializedErrorType>
      * @throws `RangeError` if `content` is an `Array` and `error.errors` does not have the same length as `content`.
      */
     protected serializeContent(content: Array<Error> | Error): {
-        error: SerializedErrorType;
+        error: SerializedError;
     } {
         if (content instanceof Array) {
             return this.handleArrayContent(content);
@@ -75,7 +53,7 @@ export default class ErrorSerializer extends BaseSerializer<SerializedErrorType>
     }
 
     private handleArrayContent(content: Array<Error>): {
-        error: SerializedErrorType;
+        error: SerializedError;
     } {
         if (
             this.errorOpts.errors !== undefined &&
@@ -127,7 +105,7 @@ export default class ErrorSerializer extends BaseSerializer<SerializedErrorType>
     }
 
     private handleObjectContent(content: Error): {
-        error: SerializedErrorType;
+        error: SerializedError;
     } {
         if (
             this.errorOpts.errors !== undefined &&

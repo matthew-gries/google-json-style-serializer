@@ -1,8 +1,9 @@
-import { BaseSerializerOpts } from "@src/base.serializer";
-import ErrorSerializer, {
+import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
+import {
     ErrorOpts,
     ErrorSerializerOpts,
-} from "@src/error.serializer";
+} from "@src/interfaces/error.serializer.interfaces";
+import ErrorSerializer from "../error.serializer";
 
 const BASE_OPTS: BaseSerializerOpts = {
     apiVersion: "apiVersion",

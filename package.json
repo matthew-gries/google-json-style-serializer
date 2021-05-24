@@ -5,6 +5,12 @@
     "main": "src/index.ts",
     "author": "Matthew Gries",
     "license": "MIT",
+    "homepage": "https://github.com/matthew-gries/google-json-style-serializer",
+    "bugs": "https://github.com/matthew-gries/google-json-style-serializer/issues",
+    "repository": {
+        "url": "https://github.com/matthew-gries/google-json-style-serializer",
+        "type": "git"
+    },
     "scripts": {
         "build": "tsc",
         "start": "yarn build && node ./dist/index.js",
