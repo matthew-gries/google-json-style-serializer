@@ -1,4 +1,4 @@
-import DataSerializer from "@src/serializers/data.serializer";
-import ErrorSerializer from "@src/serializers/error.serializer";
+import DataSerializer from "./serializers/data.serializer";
+import ErrorSerializer from "./serializers/error.serializer";
 
 export = { DataSerializer, ErrorSerializer };

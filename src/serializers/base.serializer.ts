@@ -1,4 +1,4 @@
-import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
+import { BaseSerializerOpts } from "../interfaces/base.serializer.interfaces";
 
 /**
  * Base class for serializers. Handles all top level JSON properties outside of `data` and `error` fields.

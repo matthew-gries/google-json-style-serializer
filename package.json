@@ -5,7 +5,12 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "author": "Matthew Gries",
-    "keywords": ["Google", "JSON", "style", "serializer"],
+    "keywords": [
+        "Google",
+        "JSON",
+        "style",
+        "serializer"
+    ],
     "license": "MIT",
     "homepage": "https://github.com/matthew-gries/google-json-style-serializer",
     "bugs": "https://github.com/matthew-gries/google-json-style-serializer/issues",
@@ -43,5 +48,7 @@
         "tsconfig-paths": "^3.9.0",
         "typescript": "^4.2.4"
     },
-    "files": ["lib/**/*"]
+    "files": [
+        "lib/**/*"
+    ]
 }

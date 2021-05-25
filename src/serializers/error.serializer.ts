@@ -1,6 +1,6 @@
 import BaseSerializer from "./base.serializer";
-import removeUndefined from "@src/utils/remove.undefined";
-import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
+import removeUndefined from "../utils/remove.undefined";
+import { BaseSerializerOpts } from "../interfaces/base.serializer.interfaces";
 import {
     ErrorSerializerOpts,
     ErrorOpts,
