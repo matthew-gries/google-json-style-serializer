@@ -2,8 +2,10 @@
     "name": "google-json-style-serializer",
     "version": "1.0.0",
     "description": "Serializes and deserializes data in Google JSON Style",
-    "main": "src/index.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "author": "Matthew Gries",
+    "keywords": ["Google", "JSON", "style", "serializer"],
     "license": "MIT",
     "homepage": "https://github.com/matthew-gries/google-json-style-serializer",
     "bugs": "https://github.com/matthew-gries/google-json-style-serializer/issues",
@@ -19,7 +21,12 @@
         "coverage": "yarn test --coverage",
         "test-debug": "yarn test -i",
         "format": "prettier --write .",
-        "lint": "prettier --check . && eslint src --ext .ts"
+        "lint": "prettier --check . && eslint src --ext .ts",
+        "prepare": "yarn build",
+        "prepublishOnly": "yarn lint && yarn coverage",
+        "preversion": "yarn lint && yarn coverage",
+        "version": "yarn format && git add -A src/",
+        "postversion": "git push && git push --tags"
     },
     "devDependencies": {
         "@babel/preset-typescript": "^7.13.0",
@@ -35,5 +42,6 @@
         "tsc": "^2.0.3",
         "tsconfig-paths": "^3.9.0",
         "typescript": "^4.2.4"
-    }
+    },
+    "files": ["lib/**/*"]
 }
