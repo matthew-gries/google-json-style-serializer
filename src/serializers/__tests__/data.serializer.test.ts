@@ -1,5 +1,5 @@
-import { BaseSerializerOpts } from "@src/interfaces/base.serializer.interfaces";
-import { DataSerializerOpts } from "@src/interfaces/data.serializer.interfaces";
+import { BaseSerializerOpts } from "../../interfaces/base.serializer.interfaces";
+import { DataSerializerOpts } from "../../interfaces/data.serializer.interfaces";
 import DataSerializer from "../data.serializer";
 
 const BASE_OPTS: BaseSerializerOpts = {

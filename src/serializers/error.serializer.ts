@@ -5,7 +5,7 @@ import {
     ErrorSerializerOpts,
     ErrorOpts,
     SerializedError,
-} from "@src/interfaces/error.serializer.interfaces";
+} from "../interfaces/error.serializer.interfaces";
 
 /**
  * Class to serialize error into an `error` object of a serialized JSON object.

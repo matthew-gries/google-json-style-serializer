@@ -4,7 +4,7 @@ import removeUndefined from "../utils/remove.undefined";
 import {
     DataSerializerOpts,
     SerializedData,
-} from "@src/interfaces/data.serializer.interfaces";
+} from "../interfaces/data.serializer.interfaces";
 
 /**
  * Class to serialize data into the `data` object of a serialized JSON object.
