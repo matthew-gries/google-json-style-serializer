@@ -68,7 +68,7 @@ export default class ErrorSerializer extends BaseSerializer<SerializedError> {
             const serializedErrorEntries = content.map((error) => {
                 return {
                     message: error.message,
-                    reason: error.name,
+                    reason: error.constructor.name,
                 } as ErrorOpts & { message?: string; reason?: string };
             });
 
@@ -85,7 +85,7 @@ export default class ErrorSerializer extends BaseSerializer<SerializedError> {
             const serializedErrorEntries = content.map((error, index) => {
                 return {
                     message: error.message,
-                    reason: error.name,
+                    reason: error.constructor.name,
                     domain: errorElementOpts[index].domain,
                     location: errorElementOpts[index].location,
                     locationType: errorElementOpts[index].locationType,
@@ -116,7 +116,7 @@ export default class ErrorSerializer extends BaseSerializer<SerializedError> {
                 reason?: string;
             } = {
                 message: content.message,
-                reason: content.name,
+                reason: content.constructor.name,
                 domain: this.errorOpts.errors[0].domain,
                 location: this.errorOpts.errors[0].location,
                 locationType: this.errorOpts.errors[0].locationType,

@@ -1,6 +1,6 @@
 {
     "name": "google-json-style-serializer",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Serializes and deserializes data in Google JSON Style",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
